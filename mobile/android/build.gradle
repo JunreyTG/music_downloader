@@ -1,0 +1,28 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+  repositories {
+    google()
+    mavenCentral()
+  }
+  dependencies {
+    classpath('com.android.tools.build:gradle')
+    classpath('com.facebook.react:react-native-gradle-plugin')
+    classpath('org.jetbrains.kotlin:kotlin-gradle-plugin')
+  }
+}
+
+allprojects {
+  buildDir = new File("${rootDir}/build_all/${project.name}")
+  repositories {
+    google()
+    mavenCentral()
+    maven { url 'https://www.jitpack.io' }
+    maven { url "${rootDir}/../node_modules/expo/node_modules/.expo-asset-iukDwWiF/local-maven-repo" }
+    maven { url "${rootDir}/../node_modules/expo/node_modules/expo-asset/local-maven-repo" }
+    maven { url "${rootDir}/../package/local-maven-repo" }
+  }
+}
+
+apply plugin: "expo-root-project"
+apply plugin: "com.facebook.react.rootproject"

@@ -1,0 +1,24 @@
+services:
+  mseek-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mseek-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - HOST=0.0.0.0
+      - ENVIRONMENT=production
+      # Optional: uncomment if deploying to a cloud datacenter VPS and YouTube blocks requests
+      # - YTDLP_COOKIEFILE=/app/cookies.txt
+      # - PROXY_URL=http://user:password@proxy-host:port
+    volumes:
+      # Persist downloaded audio tracks and temporary storage
+      - mseek_downloads:/app/app/storage/downloads
+      # Optional: mount cookies file
+      # - ./cookies.txt:/app/cookies.txt:ro
+
+volumes:
+  mseek_downloads:

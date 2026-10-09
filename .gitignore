@@ -1,0 +1,79 @@
+# Dependencies
+node_modules/
+mobile/node_modules/
+.pnp
+.pnp.js
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+backend/.pytest_cache/
+backend/app/storage/downloads/*
+!backend/app/storage/downloads/.gitkeep
+
+# Expo & React Native
+.expo/
+mobile/.expo/
+web-build/
+mobile/web-build/
+mobile/dist/
+dist/
+mobile/package/
+
+# Android build outputs & caches
+.gradle/
+**/android/.gradle/
+**/android/build/
+**/android/app/build/
+**/android/build_all/
+**/android/local.properties
+**/android/.cxx/
+**/android/.kotlin/
+*.apk
+*.aab
+
+# iOS
+*.ipa
+**/ios/build/
+**/ios/Pods/
+
+# Environment and sensitive files
+.env
+.env.local
+.env.*.local
+mobile/.env
+backend/.env
+cookies.txt
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System
+.DS_Store
+Thumbs.db

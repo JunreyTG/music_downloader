@@ -1,0 +1,9 @@
+node_modules
+.expo
+.gradle
+mobile/android/build
+mobile/android/.gradle
+mobile/android/build_all
+*.log
+.git
+.pytest_cache
