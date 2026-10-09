@@ -38,7 +38,19 @@ def find_apk_path() -> tuple[str | None, str | None]:
 def portal_page(request: Request):
     lan_ip = get_lan_ip()
     port = request.url.port or 8000
-    lan_url = f"http://{lan_ip}:{port}/download"
+    host_hdr = request.headers.get("x-forwarded-host") or request.headers.get("host") or ""
+    proto_hdr = request.headers.get("x-forwarded-proto") or request.url.scheme or "http"
+
+    # If running on cloud (e.g. Render, Railway) or behind reverse proxy
+    if host_hdr and not any(host_hdr.startswith(p) for p in ["localhost", "127.", "0.0.0.0"]):
+        portal_url = f"{proto_hdr}://{host_hdr}/download"
+        display_host = host_hdr
+        network_pill = f"Cloud Server: <strong>{display_host}</strong>"
+    else:
+        portal_url = f"http://{lan_ip}:{port}/download"
+        display_host = f"{lan_ip}:{port}"
+        network_pill = f"Connected on Wi-Fi: <strong>{lan_ip}</strong>"
+
     web_app_url = f"http://{lan_ip}:8081"
     apk_path, _ = find_apk_path()
     apk_ready = apk_path is not None
@@ -243,7 +255,7 @@ def portal_page(request: Request):
       <h1 class="app-title">Mseek Music</h1>
       <p class="tagline">VidMate-Style Mobile Music Downloader & Player<br>100% Offline Playback & Stream Caching</p>
       <div class="network-pill">
-        <span>&#9679;</span> Connected on Wi-Fi: <strong>{lan_ip}</strong>
+        <span>&#9679;</span> {network_pill}
       </div>
     </div>
 
@@ -255,7 +267,7 @@ def portal_page(request: Request):
       </div>
 
       <p style="font-size: 13px; color: #a3a3a3; line-height: 1.4;">
-        Download the standalone Android APK directly to your phone over the local Wi-Fi. Does not require Google Play Store.
+        Download the standalone Android APK directly to your phone. Does not require Google Play Store.
       </p>
 
       <a href="/download/mseek.apk" class="btn btn-primary" download>
@@ -273,7 +285,7 @@ def portal_page(request: Request):
           <strong>Compatibility:</strong> Android 8.0+
         </div>
         <div class="meta-item">
-          <strong>Wi-Fi URL:</strong> {lan_url}
+          <strong>Server URL:</strong> {portal_url}
         </div>
       </div>
     </div>
@@ -288,7 +300,7 @@ def portal_page(request: Request):
           <!-- Client-side dynamic QR image using qrserver API -->
           <img
             class="qr-image"
-            src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={lan_url}"
+            src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={portal_url}"
             alt="Scan to open on Wi-Fi"
             onerror="this.style.display='none'"
           />
